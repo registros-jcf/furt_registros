@@ -74,7 +74,7 @@
         <h4 class="seccion-titulo">DATOS DE ATENCIÓN</h4>
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label">Nombre del Servidor Público</label> <!--[cite: 1] -->
+                <label class="form-label">Nombre del Servidor Público</label>
                 <input type="text" class="form-control" name="Servidor Público" required>
             </div>
             <div class="col-md-4">
@@ -92,7 +92,7 @@
                 <input type="text" class="form-control" id="otroCargo" placeholder="Escriba el cargo">
             </div>
             <div class="col-md-4">
-                <label class="form-label">Lugar de Registro</label> <!--[cite: 1] -->
+                <label class="form-label">Lugar de Registro</label>
                 <select class="form-select" name="Lugar_Registro" required>
                     <option value="">Seleccione...</option>
                     <option value="OFICINA MOVIL">Oficina Móvil</option>
@@ -101,14 +101,22 @@
                     <option value="OFICINA">Oficina</option>
                 </select>
             </div>
+            <div class="col-md-4">
+                <label class="form-label">Folio del CT FURT (Opcional)</label>
+                <input type="number" class="form-control" name="Folio_CT_FURT">
+            </div>
         </div>
 
-        <!-- 1. Datos del Centro de Trabajo -->
+        <!-- 1. Datos del Centro de Trabajo (OPCIONALES) -->
         <h4 class="seccion-titulo">1. DATOS DEL CENTRO DE TRABAJO</h4>
         <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">Tipo de Centro</label>
-                <select class="form-select" id="tipoCentro" name="TipoCentro" required onchange="toggleRFC()">
+            <div class="col-md-4">
+                <label class="form-label">Nombre Comercial (Opcional)</label>
+                <input type="text" class="form-control" name="NombreComercial">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Tipo de Centro (Opcional)</label>
+                <select class="form-select" id="tipoCentro" name="TipoCentro">
                     <option value="">Seleccione...</option>
                     <option value="FISICA">Persona Física</option>
                     <option value="MORAL">Persona Moral</option>
@@ -116,60 +124,97 @@
                     <option value="CIVIL">Sociedad Civil</option>
                 </select>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label class="form-label">Razón Social (Opcional)</label>
                 <input type="text" class="form-control" name="RazonSocial">
             </div>
             <div class="col-md-4">
-                <label class="form-label">Nombre Comercial</label>
-                <input type="text" class="form-control" name="NombreComercial" required>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">RFC <span id="reqRFC" class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="inputRFC" name="RFC" pattern="^[A-Z&Ñ]{3,4}\d{6}[A-Z0-9]{3}$" title="Debe ser un RFC válido (12 o 13 caracteres)" required>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">CURP del Representante</label>
-                <input type="text" class="form-control" name="CURP_Rep" pattern="^[A-Z][AEIOUX][A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HMX](AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d]\d$" title="Debe ser una CURP válida (18 caracteres)" required>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Número de identificación de Representante (Opcional)</label>
-                <input type="text" class="form-control" name="Datos_Identificacion_Rep">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Apellido Paterno Rep.</label> <!--[cite: 1] -->
-                <input type="text" class="form-control" name="ApPaterno" required>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Apellido Materno Rep.</label> <!--[cite: 1] -->
-                <input type="text" class="form-control" name="ApMaterno" required>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Nombre(s) Rep.</label> <!--[cite: 1] -->
-                <input type="text" class="form-control" name="Nombres" required>
+                <label class="form-label">RFC (Opcional)</label>
+                <input type="text" class="form-control" id="inputRFC" name="RFC" pattern="^[A-Z&Ñ]{3,4}\d{6}[A-Z0-9]{3}$" title="Debe ser un RFC válido (12 o 13 caracteres)">
             </div>
         </div>
 
-        <!-- 2. Contacto -->
-        <h4 class="seccion-titulo">2. CONTACTO</h4>
+        <!-- Datos del Representante -->
+        <h4 class="seccion-titulo">DATOS DEL REPRESENTANTE</h4>
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label">Teléfono CT (Opcional)</label>
-                <input type="text" class="form-control" name="TelCT" pattern="\d{10}" title="Debe contener exactamente 10 dígitos numéricos" maxlength="10">
+                <label class="form-label">Apellido Paterno Rep.</label>
+                <input type="text" class="form-control" id="repPat" name="ApPaterno" required>
             </div>
             <div class="col-md-4">
-                <label class="form-label">Teléfono Móvil</label>
-                <input type="text" class="form-control" name="TelMovil" pattern="\d{10}" title="Debe contener exactamente 10 dígitos numéricos" maxlength="10" required>
+                <label class="form-label">Apellido Materno Rep.</label>
+                <input type="text" class="form-control" id="repMat" name="ApMaterno" required>
             </div>
             <div class="col-md-4">
-                <label class="form-label">Correo Electrónico</label> <!--[cite: 1] -->
-                <input type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" class="form-control" name="Correo" placeholder="ejemplo@correo.com" required>
+                <label class="form-label">Nombre(s) Rep.</label>
+                <input type="text" class="form-control" id="repNom" name="Nombres" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">CURP del Representante (Opcional)</label>
+                <input type="text" class="form-control" id="repCurp" name="CURP_Rep" pattern="^[A-Z][AEIOUX][A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HMX](AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d]\d$" title="Debe ser una CURP válida (18 caracteres)">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">INE Frente (Rep)</label>
+                <input class="form-control" type="file" id="foto-ine-f-rep" name="Foto_INE_Frente_Representante" accept="image/*" required>
+                <div id="badge-foto-ine-f-rep"></div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">INE Reverso (Rep)</label>
+                <input class="form-control" type="file" id="foto-ine-r-rep" name="Foto_INE_Reverso_Representante" accept="image/*" required>
+                <div id="badge-foto-ine-r-rep"></div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Foto Representante</label>
+                <input class="form-control" type="file" id="foto-solic-rep" name="Foto_Solicitante_Representante" accept="image/*" required>
+                <div id="badge-foto-solic-rep"></div>
+            </div>
+
+            <!-- Colapsable Tutor -->
+            <div class="col-md-12 mt-4">
+                <label class="form-label fw-bold text-primary">¿La o el Representante también funge como Tutor(a)?</label>
+                <select class="form-select" name="Es_Tutor" id="selectEsTutor" required onchange="toggleTutor()">
+                    <option value="">Seleccione...</option>
+                    <option value="SI">Sí</option>
+                    <option value="NO">No</option>
+                </select>
+            </div>
+            <div id="divTutorOpcional" style="display:none;" class="col-12 mt-3 p-3 bg-light rounded">
+                <h5 class="text-muted border-bottom pb-2">Datos del Tutor (Opcionales)</h5>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Paterno Tutor</label>
+                        <input type="text" class="form-control" name="ApellidoPaterno_Tutor" id="tutPat">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Materno Tutor</label>
+                        <input type="text" class="form-control" name="ApellidoMaterno_Tutor" id="tutMat">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Nombres Tutor</label>
+                        <input type="text" class="form-control" name="Nombre_Tutor" id="tutNom">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">CURP Tutor</label>
+                        <input type="text" class="form-control" name="CURP_Tutor" id="tutCurp" pattern="^[A-Z][AEIOUX][A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HMX](AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d]\d$" title="Debe ser una CURP válida (18 caracteres)">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">INE Frente Tutor</label>
+                        <input class="form-control" type="file" id="foto-tutor-inef" name="Foto_INE_Frente_Tutor" accept="image/*">
+                        <div id="badge-foto-tutor-inef"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">INE Reverso Tutor</label>
+                        <input class="form-control" type="file" id="foto-tutor-iner" name="Foto_INE_Reverso_Tutor" accept="image/*">
+                        <div id="badge-foto-tutor-iner"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Foto Tutor</label>
+                        <input class="form-control" type="file" id="foto-tutor-solic" name="Foto_Solicitante_Tutor" accept="image/*">
+                        <div id="badge-foto-tutor-solic"></div>
+                    </div>
+                </div>
             </div>
         </div>
-<div class="col-md-4">
-                    <label class="form-label">Folio del CT FURT (Opcional)</label>
-                    <input type="number" class="form-control" name="Folio_CT_FURT">
-                </div>
         <div class="mt-4 text-end">
                 <button type="button" class="btn btn-next px-5 py-2 fw-bold" onclick="irAlPasoJS(2)">Siguiente ➜</button>
             </div>
@@ -177,82 +222,78 @@
 
         <!-- PÁGINA 2 -->
         <div class="step-pane" id="step2">
-            <!-- 3 & 4. Trabajadores y Domicilio -->
-            <h4 class="seccion-titulo">3. TRABAJADORES Y 4. DOMICILIO</h4>
-        <div class="row g-3">
-             <div class="col-md-4">
-                <label class="form-label">Número de Trabajadores</label> <!--[cite: 1] -->
-                <select class="form-select" name="NumTrabajadores" required>
-                    <option value="">Seleccione...</option>
-                    <option value="0-5">0-5</option>
-                    <option value="6-10">6-10</option>
-                    <option value="11-30">11-30</option>
-                    <option value="31-50">31-50</option>
-                    <option value="51-100">51-100</option>
-                    <option value="101-250">101-250</option>
-                    <option value="250+">250 o más</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Estado (Local)</label>
-                <input class="form-control" name="Estado" id="inputEstado" list="listaEstados" placeholder="Escribe o selecciona..." required>
-                <datalist id="listaEstados"></datalist>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Municipio (Local)</label>
-                <input class="form-control" name="Municipio" id="inputMunicipio" list="listaMunicipios" placeholder="Escribe o selecciona..." required>
-                <datalist id="listaMunicipios"></datalist>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">C.P.</label>
-                <input type="text" class="form-control" name="CP" pattern="\d{5}" title="Debe contener 5 dígitos" required>
-            </div>
-            <div class="col-md-5">
-                <label class="form-label">Calle y Colonia</label>
-                <input type="text" class="form-control" name="CalleColonia" required>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Número Ext. e Int.</label>
-                <input type="text" class="form-control" name="Numeros" placeholder="Ej. Ext 10 Int 5 (Int. opcional)" required>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Referencia</label> <!--[cite: 1] -->
-                <input type="text" class="form-control" name="Referencia" required>
-            </div>
-        </div>
-
-        <!-- 5. Actividad -->
-        <h4 class="seccion-titulo">5. TIPO DE ACTIVIDAD ECONÓMICA</h4>
-        <div class="row g-3">
-            <div class="col-md-12">
-                    <label class="form-label">¿Cuál es la actividad principal del centro de trabajo? (Ej. Tienda de abarrotes, Panadería, Estética, Taller de carpintería, etc.)</label>
-                    <input type="text" class="form-control" name="Actividad_Principal" required>
+            <!-- 7. Plan -->
+            <h4 class="seccion-titulo">7. PLAN DE ACTIVIDADES</h4>
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label class="form-label">Actividades a desarrollar (Máx. 500 caracteres)</label>
+                    <textarea class="form-control" name="Actividades" rows="2" maxlength="500" required></textarea>
                 </div>
                 <div class="col-md-12">
-                    <label class="form-label">Selecciona el tipo de actividad</label>
-                    <select class="form-select" id="actividadEconomica" name="Giro" required onchange="toggleOtroActividad()">
+                    <label class="form-label">Habilidades a adquirir (Máx. 500 caracteres)</label>
+                    <textarea class="form-control" name="Habilidades" rows="2" maxlength="500" required></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Número de jóvenes</label>
+                    <input type="number" class="form-control" name="No_Jovenes" value="1" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">¿El CT puede recibir jóvenes con discapacidad?</label>
+                    <select class="form-select" name="Acepta_Discapacidad" id="selectAceptaDiscapacidad" required onchange="toggleDiscapacidadCT()">
                         <option value="">Seleccione...</option>
-                    <option value="AGRICULTURA, GANADERIA, PESCA, CAZA Y APROVECHAMIENTO FORESTAL">AGRICULTURA, GANADERÍA,PESCA, CAZA Y APROVECHAMIENTO FORESTAL</option>
-                    <option value="COMERCIO">COMERCIO</option>
-                    <option value="SERVICIOS FINANCIEROS">SERVICIOS FINANCIEROS</option>
-                    <option value="SERVICIOS PROFESIONALES">SERVICIOS PROFESIONALES</option>
-                    <option value="CULTURA Y DEPORTE">CULTURA Y DEPORTE</option>
-                    <option value="CONSTRUCCION">CONSTRUCCIÓN</option>
-                    <option value="CORREOS Y ALMACENAMIENTO">CORREOS Y ALMACENAMIENTO</option>
-                    <option value="RESTAURANTES, HOSPEDAJE Y SERVICIOS TURISTICOS">RESTAURANTES, HOSPEDAJE Y SERVICIOS TURÍSTICOS</option>
-                    <option value="SERVICIOS EDUCATIVOS">SERVICIOS EDUCATIVOS</option>
-                    <option value="RECONSTRUCCION">RECONSTRUCCIÓN</option>
-                    <option value="INDUSTRIAS MANUFACTURERAS">INDUSTRIAS MANUFACTURERAS</option>
-                    <option value="INFORMACION EN MEDIOS MASIVOS E INDUSTRIA DEL CINE">INFORMACIÓN EN MEDIOS MASIVOS E INDUSTRIA DEL CINE</option>
-                    <option value="ASOCIACIONES Y ORGANIZACIONES">ASOCIACIONES Y ORGANIZACIONES</option>
-                    <option value="SERVICIO DE SALUD">SERVICIO DE SALUD</option>
-                    <option value="OTRO">OTRO</option>
-                </select>
+                        <option value="SI">Sí</option>
+                        <option value="NO">No</option>
+                    </select>
+                </div>
+                <div class="col-md-12" id="divTipoDiscapacidad" style="display: none;">
+                    <label class="form-label text-danger">Selecciona al menos una:</label>
+                    <input type="hidden" name="Tipo_Discapacidad" id="HiddenDiscapacidad">
+                    <div class="form-check"><input class="form-check-input chk-disc" type="checkbox" value="INTELECTUAL"> Discapacidad Intelectual (TEA, Intelectual, Síndrome de Down)</div>
+                    <div class="form-check"><input class="form-check-input chk-disc" type="checkbox" value="MENTAL"> Discapacidad Mental (Trastornos psiquiátricos, emocionales)</div>
+                    <div class="form-check"><input class="form-check-input chk-disc" type="checkbox" value="MOTRIZ"> Discapacidad Motriz (Dificultad para caminar, escribir, etc.)</div>
+                    <div class="form-check"><input class="form-check-input chk-disc" type="checkbox" value="MULTIPLE"> Discapacidad Múltiple</div>
+                    <div class="form-check"><input class="form-check-input chk-disc" type="checkbox" value="SENSORIAL"> Discapacidad Sensorial (Auditiva, visual, lenguaje)</div>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <label class="form-label d-block text-danger">Marca exactamente 5 días:</label>
+                    <input type="hidden" name="Dias_Capacita" id="DiasCapacitacionHidden">
+                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="LUNES"> Lu</div>
+                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="MARTES"> Ma</div>
+                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="MIERCOLES"> Mi</div>
+                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="JUEVES"> Ju</div>
+                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="VIERNES"> Vi</div>
+                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="SABADO"> Sa</div>
+                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="DOMINGO"> Do</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Hora inicio</label>
+                    <input type="time" class="form-control" id="horaEntrada" name="Hora_inicio_capacita" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Hora fin</label>
+                    <input type="time" class="form-control" id="horaSalida" name="Hora_Fin_Capacita" required>
+                </div>
             </div>
-            <div class="col-md-12" id="divOtroActividad" style="display: none;"> <!--[cite: 1] -->
-                <input type="text" class="form-control" id="otraActividad" name="Giro" placeholder="Especifique">
+
+            <!-- Fotos del Local -->
+            <h4 class="seccion-titulo mt-4">FOTOS DEL CENTRO DE TRABAJO</h4>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Comprobante Domicilio (Opcional)</label>
+                    <input class="form-control" type="file" id="foto-dom" name="Foto_Domicilio" accept="image/*">
+                    <div id="badge-foto-dom"></div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Exterior del CT (Opcional)</label>
+                    <input class="form-control" type="file" id="foto-ext" name="Foto_Exterior" accept="image/*">
+                    <div id="badge-foto-ext"></div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Interior del CT (Opcional)</label>
+                    <input class="form-control" type="file" id="foto-int" name="Foto_Interior" accept="image/*">
+                    <div id="badge-foto-int"></div>
+                </div>
             </div>
-        </div>
 
         <div class="mt-4 d-flex justify-content-between">
                 <button type="button" class="btn btn-prev px-4 py-2 fw-bold" onclick="irAlPasoJS(1)">⬅ Anterior</button>
@@ -262,132 +303,108 @@
 
         <!-- PÁGINA 3 -->
         <div class="step-pane" id="step3">
-            <!-- 6. Fotos Representante y CT -->
-            <h4 class="seccion-titulo">6. FOTOS REPRESENTANTE Y CT</h4>
-        <div class="row g-3">
-            <div class="col-md-4">
-                <label class="form-label">INE Frente (Rep)</label>
-                <input class="form-control" type="file" id="foto-ine-f" name="Foto_INE_Frente_Representante" accept="image/*" required>
-                <div id="badge-foto-ine-f"></div>
+            <!-- 2. Contacto -->
+            <h4 class="seccion-titulo">2. CONTACTO</h4>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Teléfono CT (Opcional)</label>
+                    <input type="text" class="form-control" name="TelCT" pattern="\d{10}" title="Debe contener exactamente 10 dígitos numéricos" maxlength="10">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Teléfono Móvil (Opcional)</label>
+                    <input type="text" class="form-control" name="TelMovil" pattern="\d{10}" title="Debe contener exactamente 10 dígitos numéricos" maxlength="10">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Correo Electrónico (Opcional)</label>
+                    <input type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" class="form-control" name="Correo" placeholder="ejemplo@correo.com">
+                </div>
             </div>
-            <div class="col-md-4">
-                <label class="form-label">INE Reverso (Rep)</label>
-                <input class="form-control" type="file" id="foto-ine-r" name="Foto_INE_Reverso_Representante" accept="image/*" required>
-                <div id="badge-foto-ine-r"></div>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Foto Solicitante</label>
-                <input class="form-control" type="file" id="foto-solic" name="Foto_Solicitante_Representante" accept="image/*" required>
-                <div id="badge-foto-solic"></div>
-            </div>
-             <div class="col-md-4">
-                <label class="form-label">Comprobante Domicilio (Opcional)</label>
-                <input class="form-control" type="file" id="foto-dom" name="Foto_Domicilio" accept="image/*">
-                <div id="badge-foto-dom"></div>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Exterior del CT (Opcional)</label>
-                <input class="form-control" type="file" id="foto-ext" name="Foto_Exterior" accept="image/*">
-                <div id="badge-foto-ext"></div>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Interior del CT (Opc)</label>
-                <input class="form-control" type="file" id="foto-int" name="Foto_Interior" accept="image/*">
-                <div id="badge-foto-int"></div>
-            </div>
-        </div>
 
-        <!-- Tutor -->
-        <h4 class="seccion-titulo">DATOS DEL TUTOR (Opcional)</h4>
-        <div class="row g-3">
-            <div class="col-md-3">
-                <label class="form-label">Paterno Tutor</label>
-                <input type="text" class="form-control" name="ApellidoPaterno_Tutor">
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Materno Tutor</label>
-                <input type="text" class="form-control" name="ApellidoMaterno_Tutor">
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Nombres Tutor</label>
-                <input type="text" class="form-control" name="Nombre_Tutor">
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">CURP Tutor</label>
-                <input type="text" class="form-control" name="CURP_Tutor" pattern="^[A-Z][AEIOUX][A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HMX](AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d]\d$" title="Debe ser una CURP válida (18 caracteres)">
-            </div>
-            <!-- Fotos Tutor -->
-            <div class="col-md-4">
-                <label class="form-label">INE Frente Tutor</label>
-                <input class="form-control" type="file" id="foto-tutor-inef" name="Foto_INE_Frente_Tutor" accept="image/*">
-                <div id="badge-foto-tutor-inef"></div>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">INE Reverso Tutor</label>
-                <input class="form-control" type="file" id="foto-tutor-iner" name="Foto_INE_Reverso_Tutor" accept="image/*">
-                <div id="badge-foto-tutor-iner"></div>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Foto Tutor</label>
-                <input class="form-control" type="file" id="foto-tutor-solic" name="Foto_Solicitante_Tutor" accept="image/*">
-                <div id="badge-foto-tutor-solic"></div>
-            </div>
-        </div>
-        
-        <!-- 7. Plan -->
-        <h4 class="seccion-titulo">7. PLAN DE ACTIVIDADES</h4>
-        <div class="row g-3">
-            <div class="col-md-12">
-                <label class="form-label">Actividades a desarrollar (Máx. 500 caracteres)</label>
-                <textarea class="form-control" name="Actividades" rows="2" maxlength="500" required></textarea>
-            </div>
-            <div class="col-md-12">
-                <label class="form-label">Habilidades a adquirir (Máx. 500 caracteres)</label>
-                <textarea class="form-control" name="Habilidades" rows="2" maxlength="500" required></textarea>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Número de jóvenes</label>
-                <input type="number" class="form-control" name="No_Jovenes" value="1" readonly>
-            </div>
-            <div class="col-md-6">
-                    <label class="form-label">¿El CT puede recibir jóvenes con discapacidad?</label>
-                    <select class="form-select" name="Acepta_Discapacidad" id="selectAceptaDiscapacidad" required onchange="toggleDiscapacidad()">
+            <!-- 3 & 4. Trabajadores y Domicilio -->
+            <h4 class="seccion-titulo mt-4">3. TRABAJADORES Y 4. DOMICILIO</h4>
+            <div class="row g-3">
+                 <div class="col-md-4">
+                    <label class="form-label">Número de Trabajadores (Opcional)</label>
+                    <select class="form-select" name="NumTrabajadores">
                         <option value="">Seleccione...</option>
-                        <option value="SI">Sí</option>
-                        <option value="NO">No</option>
+                        <option value="0-5">0-5</option>
+                        <option value="6-10">6-10</option>
+                        <option value="11-30">11-30</option>
+                        <option value="31-50">31-50</option>
+                        <option value="51-100">51-100</option>
+                        <option value="101-250">101-250</option>
+                        <option value="250+">250 o más</option>
                     </select>
                 </div>
-                <div class="col-md-12" id="divTipoDiscapacidad" style="display: none;">
-                    <label class="form-label text-danger">Selecciona al menos una:</label>
-                    <input type="hidden" name="Tipo_Discapacidad" id="HiddenDiscapacidad">
-                    <div class="form-check"><input class="form-check-input chk-disc" type="checkbox" value="DISCAPACIDAD INTELECTUAL (TRASTORNO DEL ESPECTRO AUTISTA (TEA), INTELECTUAL Y SÍNDROME DE DOWN)"> Discapacidad Intelectual (Trastorno del Espectro Autista (TEA), Intelectual y Síndrome de Down)</div>
-                    <div class="form-check"><input class="form-check-input chk-disc" type="checkbox" value="DISCAPACIDAD MENTAL (TRASTORNOS PSIQUIÁTRICOS, EMOCIONALES O DEL COMPORTAMIENTO)"> Discapacidad Mental (Trastornos Psiquiátricos, Emocionales o del Comportamiento)</div>
-                    <div class="form-check"><input class="form-check-input chk-disc" type="checkbox" value="DISCAPACIDAD MOTRIZ (DIFICULTAD PARA CAMINAR, MANTENER EL EQUILIBRIO, ESCRIBIR, ETC.)"> Discapacidad Motriz (Dificultad para Caminar, Mantener el Equilibrio, Escribir, etc.)</div>
-                    <div class="form-check"><input class="form-check-input chk-disc" type="checkbox" value="DISCAPACIDAD MÚLTIPLE (DISCAPACIDADES MÚLTIPLES Y OTRO TIPO DE DISCAPACIDADES)"> Discapacidad Múltiple (Discapacidades Múltiples y Otro Tipo de Discapacidades)</div>
-                    <div class="form-check"><input class="form-check-input chk-disc" type="checkbox" value="DISCAPACIDAD SENSORIAL (AUDITIVA, VISUAL, LENGUAJE Y COMUNICACIÓN)"> Discapacidad Sensorial (Auditiva, Visual, Lenguaje y Comunicación)</div>
+                <div class="col-md-4">
+                    <label class="form-label">Estado (Local - Opcional)</label>
+                    <input class="form-control" name="Estado" id="inputEstado" list="listaEstados" placeholder="Escribe o selecciona...">
+                    <datalist id="listaEstados"></datalist>
                 </div>
-            
-            <div class="col-md-12 mt-3">
-                <label class="form-label d-block text-danger">Marca exactamente 5 días:</label> <!--[cite: 1] -->
-                <input type="hidden" name="Dias_Capacita" id="DiasCapacitacionHidden">
-                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="LUNES"> Lu</div>
-                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="MARTES"> Ma</div>
-                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="MIERCOLES"> Mi</div>
-                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="JUEVES"> Ju</div>
-                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="VIERNES"> Vi</div>
-                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="SABADO"> Sa</div>
-                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="DOMINGO"> Do</div>
+                <div class="col-md-4">
+                    <label class="form-label">Municipio (Local - Opcional)</label>
+                    <input class="form-control" name="Municipio" id="inputMunicipio" list="listaMunicipios" placeholder="Escribe o selecciona...">
+                    <datalist id="listaMunicipios"></datalist>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">C.P. (Opcional)</label>
+                    <input type="text" class="form-control" name="CP" pattern="\d{5}" title="Debe contener 5 dígitos">
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">Calle y Colonia (Opcional)</label>
+                    <input type="text" class="form-control" name="CalleColonia">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Número Ext. e Int. (Opcional)</label>
+                    <input type="text" class="form-control" name="Numeros" placeholder="Ej. Ext 10 Int 5">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Referencia (Opcional)</label>
+                    <input type="text" class="form-control" name="Referencia">
+                </div>
+            </div>
+
+            <!-- 5. Actividad -->
+            <h4 class="seccion-titulo mt-4">5. TIPO DE ACTIVIDAD ECONÓMICA</h4>
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label class="form-label">Actividad principal del centro de trabajo (Opcional)</label>
+                    <input type="text" class="form-control" name="Actividad_Principal">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Selecciona el tipo de actividad (Opcional)</label>
+                    <select class="form-select" id="actividadEconomica" name="Giro" onchange="toggleOtroActividad()">
+                        <option value="">Seleccione...</option>
+                        <option value="AGRICULTURA, GANADERIA, PESCA, CAZA Y APROVECHAMIENTO FORESTAL">AGRICULTURA, GANADERÍA,PESCA, CAZA Y APROVECHAMIENTO FORESTAL</option>
+                        <option value="COMERCIO">COMERCIO</option>
+                        <option value="SERVICIOS FINANCIEROS">SERVICIOS FINANCIEROS</option>
+                        <option value="SERVICIOS PROFESIONALES">SERVICIOS PROFESIONALES</option>
+                        <option value="CULTURA Y DEPORTE">CULTURA Y DEPORTE</option>
+                        <option value="CONSTRUCCION">CONSTRUCCIÓN</option>
+                        <option value="CORREOS Y ALMACENAMIENTO">CORREOS Y ALMACENAMIENTO</option>
+                        <option value="RESTAURANTES, HOSPEDAJE Y SERVICIOS TURISTICOS">RESTAURANTES, HOSPEDAJE Y SERVICIOS TURÍSTICOS</option>
+                        <option value="SERVICIOS EDUCATIVOS">SERVICIOS EDUCATIVOS</option>
+                        <option value="RECONSTRUCCION">RECONSTRUCCIÓN</option>
+                        <option value="INDUSTRIAS MANUFACTURERAS">INDUSTRIAS MANUFACTURERAS</option>
+                        <option value="INFORMACION EN MEDIOS MASIVOS E INDUSTRIA DEL CINE">INFORMACIÓN EN MEDIOS MASIVOS E INDUSTRIA DEL CINE</option>
+                        <option value="ASOCIACIONES Y ORGANIZACIONES">ASOCIACIONES Y ORGANIZACIONES</option>
+                        <option value="SERVICIO DE SALUD">SERVICIO DE SALUD</option>
+                        <option value="OTRO">OTRO</option>
+                    </select>
+                </div>
+                <div class="col-md-12" id="divOtroActividad" style="display: none;">
+                    <input type="text" class="form-control" id="otraActividad" name="Giro" placeholder="Especifique">
+                </div>
             </div>
             
-            <div class="col-md-6">
-                <label class="form-label">Hora inicio</label> <!--[cite: 1] -->
-                <input type="time" class="form-control" id="horaEntrada" name="Hora_inicio_capacita" required>
+            <!-- Observaciones -->
+            <h4 class="seccion-titulo mt-4">OBSERVACIONES</h4>
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label class="form-label">Anotaciones del servidor público (Opcional)</label>
+                    <textarea class="form-control" name="Observaciones" rows="3" placeholder="Escribe aquí cualquier observación..."></textarea>
+                </div>
             </div>
-            <div class="col-md-6">
-                <label class="form-label">Hora fin</label> <!--[cite: 1] -->
-                <input type="time" class="form-control" id="horaSalida" name="Hora_Fin_Capacita" required>
-            </div>
-        </div>
 
         <div class="mt-4 d-flex justify-content-between align-items-center">
                 <button type="button" class="btn btn-prev px-4 py-2 fw-bold" onclick="irAlPasoJS(2)">⬅ Anterior</button>
@@ -444,7 +461,7 @@
         const inputOtra = document.getElementById('otraActividad');
         if (select.value === 'OTRO') {
             divOtro.style.display = 'block';
-            inputOtra.required = true;
+            inputOtra.required = true; // Sigue siendo requerido si marcan OTRO
             inputOtra.name = "Giro"; 
             select.name = ""; 
         } else {
@@ -473,14 +490,23 @@
             select.name = "Cargo";
         }
     }
-   function toggleDiscapacidad() {
+    function toggleTutor() {
+        const selectEsTutor = document.getElementById('selectEsTutor');
+        const divTutor = document.getElementById('divTutorOpcional');
+        if (selectEsTutor.value === 'NO') {
+            divTutor.style.display = 'block';
+        } else {
+            divTutor.style.display = 'none';
+        }
+    }
+   function toggleDiscapacidadCT() {
         const selectAcepta = document.getElementById('selectAceptaDiscapacidad');
         const divTipo = document.getElementById('divTipoDiscapacidad');
         if (selectAcepta.value === 'SI') {
             divTipo.style.display = 'block';
         } else {
             divTipo.style.display = 'none';
-            document.querySelectorAll('#divTipoDiscapacidad .chk-disc').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.chk-disc').forEach(cb => cb.checked = false);
             document.getElementById('HiddenDiscapacidad').value = '';
         }
     }
@@ -500,6 +526,28 @@
     document.getElementById('formCT').addEventListener('submit', function(e) {
         e.preventDefault();
         
+        // Clonar datos de Representante a Tutor si respondieron "SÍ"
+        const selectEsTutor = document.getElementById('selectEsTutor');
+        if (selectEsTutor && selectEsTutor.value === 'SI') {
+            document.getElementById('tutPat').value = document.getElementById('repPat').value;
+            document.getElementById('tutMat').value = document.getElementById('repMat').value;
+            document.getElementById('tutNom').value = document.getElementById('repNom').value;
+            document.getElementById('tutCurp').value = document.getElementById('repCurp').value;
+            
+            // Copiar las base64 de las imágenes si existen
+            const fRep = document.getElementById('foto-ine-f-rep');
+            const fTut = document.getElementById('foto-tutor-inef');
+            if (fRep.dataset.base64) fTut.dataset.base64 = fRep.dataset.base64;
+            
+            const rRep = document.getElementById('foto-ine-r-rep');
+            const rTut = document.getElementById('foto-tutor-iner');
+            if (rRep.dataset.base64) rTut.dataset.base64 = rRep.dataset.base64;
+            
+            const sRep = document.getElementById('foto-solic-rep');
+            const sTut = document.getElementById('foto-tutor-solic');
+            if (sRep.dataset.base64) sTut.dataset.base64 = sRep.dataset.base64;
+        }
+
         // Validación de casillas de discapacidad
         const selectDisc = document.getElementById('selectAceptaDiscapacidad');
         const chkDisc = document.querySelectorAll('.chk-disc:checked');
