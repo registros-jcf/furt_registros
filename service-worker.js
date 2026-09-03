@@ -1,4 +1,4 @@
-const CACHE_NAME = 'furt-ct-v1.15';
+const CACHE_NAME = 'furt-ct-v1.16';
 const urlsToCache = [
   './',
   './index.html',
