@@ -9,156 +9,148 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root { --stps-dark: #161a1d; --stps-grey: #98989A; --stps-gold: #b38e5d; --stps-darkgold: #8b6530; --stps-guinda: #611232; }
-        /* overscroll-behavior-y bloquea que la pantalla se refresque al jalar hacia abajo */
-        body { background-color: #f6f3ee; color: var(--stps-dark); padding-top: 250px; overscroll-behavior-y: none; }
+        body { background-color: #f6f3ee; color: var(--stps-dark); padding-top: 150px; overscroll-behavior-y: none; }
         
-        /* Pantalla de carga (Overlay) */
         #loadingOverlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
         
-        /* Barra de navegación superior fija */
         .sticky-top-bar { position: fixed; top: 0; left: 0; width: 100%; z-index: 1050; background-color: #f8f9fa; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .banner-legal { background-color: white; font-size: 0.65rem; text-align: center; padding: 4px; font-weight: bold; border-bottom: 1px solid #ddd; }
-        .nav-tabs .nav-link { color: var(--stps-grey); font-weight: bold; border: none; }
-        .nav-tabs .nav-link.active { color: var(--stps-guinda); border-bottom: 3px solid var(--stps-guinda); background-color: transparent;}
-        
-        /* Menú de pasos tipo Boxeando por la Paz */
-        .step-tabs { display: flex; justify-content: center; background-color: white; padding-top: 10px; border-bottom: 2px solid #eee; }
-        .step-tab { flex: 1; text-align: center; padding: 10px 5px; font-size: 0.85rem; font-weight: bold; color: var(--stps-grey); cursor: pointer; text-transform: uppercase; }
-        .step-tab.active { color: var(--stps-green); border-bottom: 4px solid var(--stps-green); }
         
         .header-institucional { background-color: var(--stps-gold); color: white; }
         .seccion-titulo { color: var(--stps-darkgold); border-bottom: 2px solid var(--stps-grey); padding-bottom: 5px; margin-top: 20px;}
-        .btn-enviar, .btn-next { background-color: var(--stps-gold); color: white; border: none; }
-        .btn-prev { background-color: var(--stps-grey); color: white; border: none; }
+        .btn-enviar { background-color: var(--stps-gold); color: white; border: none; }
         .form-control:focus, .form-select:focus { border-color: var(--stps-gold); box-shadow: 0 0 0 0.25rem rgba(179, 142, 93, 0.25); }
-        
-        /* Ocultar/Mostrar los pasos */
-        .step-pane { display: none; } 
-        .step-pane.active { display: block; }
-        
-        /* Botones flotantes dorados */
-        .btn-flotante { position: fixed; right: 20px; z-index: 1000; background-color: var(--stps-darkgold); color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-weight: bold; box-shadow: 0px 4px 6px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; cursor: pointer;}
-        .btn-flotante-arriba { bottom: 80px; } .btn-flotante-abajo { bottom: 20px; }
     </style>
 </head>
 <body>
+
 <!-- Overlay de Carga -->
 <div id="loadingOverlay" class="d-none">
     <div class="spinner-border text-light mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
     <h3 class="fw-bold text-center px-4">⏳ Guardando, no cierres...</h3>
 </div>
+
 <!-- Barra Superior Fija -->
 <div class="sticky-top-bar">
     <div class="banner-legal">"ESTE PROGRAMA ES PÚBLICO AJENO A CUALQUIER PARTIDO POLÍTICO. QUEDA PROHIBIDO EL USO PARA FINES DISTINTOS A LOS ESTABLECIDOS EN EL PROGRAMA"</div>
     <div class="d-flex justify-content-between align-items-center p-3 header-institucional mt-2">
-        <h5 class="m-0 fw-bold">FURT - CT (VERSIÓN LITE)</h5>
+        <h5 class="m-0 fw-bold">FURT - CT (EXTRA LITE)</h5>
         <button id="sync-counter" class="btn btn-light btn-sm fw-bold text-dark" onclick="syncPending()">Pendientes: 0</button>
-    </div>
-    <!-- Menú de pasos navegables -->
-    <div class="step-tabs">
-        <div class="step-tab active" id="tab1" onclick="irAlPasoJS(1)">📝 1. Datos y Plan</div>
-        <div class="step-tab" id="tab2" onclick="irAlPasoJS(2)">📸 2. Fotos y Enviar</div>
     </div>
 </div>
 
 <div class="container pb-4">
     <form id="formCT">
-        <!-- ==================== PÁGINA 1: DATOS Y PLAN ==================== -->
-        <div class="step-pane active" id="step1">
-            <h4 class="seccion-titulo">DATOS DE ATENCIÓN</h4>
-            <div class="row g-3">
-                <div class="col-md-12">
-                    <label class="form-label">Nombre completo del responsable del llenado del formulario</label>
-                    <input type="text" class="form-control" name="Servidor Público" required>
-                </div>
-            </div>
-
-            <h4 class="seccion-titulo mt-4">DATOS DEL RESPONSABLE DEL CENTRO DE TRABAJO</h4>
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Apellido Paterno</label>
-                    <input type="text" class="form-control" name="ApPaterno" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Apellido Materno</label>
-                    <input type="text" class="form-control" name="ApMaterno" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Nombre(s)</label>
-                    <input type="text" class="form-control" name="Nombres" required>
-                </div>
-                <div class="col-md-12">
-                    <label class="form-label">Teléfono de contacto</label>
-                    <input type="text" class="form-control" name="TelMovil" pattern="\d{10}" title="Debe contener exactamente 10 dígitos numéricos" maxlength="10" required>
-                </div>
-            </div>
-
-            <h4 class="seccion-titulo mt-4">PLAN DE ACTIVIDADES</h4>
-            <div class="row g-3">
-                <div class="col-md-12">
-                    <label class="form-label">Descripción de las actividades que realizarán las y los Aprendices</label>
-                    <textarea class="form-control" name="Actividades" rows="3" maxlength="500" required></textarea>
-                </div>
-                <div class="col-md-12">
-                    <label class="form-label">Habilidades que desarrollarán</label>
-                    <textarea class="form-control" name="Habilidades" rows="3" maxlength="500" required></textarea>
-                </div>
-                
-                <div class="col-md-12 mt-3">
-                    <label class="form-label d-block text-danger">Días de capacitación (Marca exactamente 5 días):</label>
-                    <input type="hidden" name="Dias_Capacita" id="DiasCapacitacionHidden">
-                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="LUNES"> Lu</div>
-                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="MARTES"> Ma</div>
-                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="MIERCOLES"> Mi</div>
-                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="JUEVES"> Ju</div>
-                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="VIERNES"> Vi</div>
-                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="SABADO"> Sa</div>
-                    <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="DOMINGO"> Do</div>
-                </div>
-                
-                <div class="col-md-6">
-                    <label class="form-label">Horario de inicio</label>
-                    <input type="time" class="form-control" id="horaEntrada" name="Hora_inicio_capacita" required>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Horario de fin</label>
-                    <input type="time" class="form-control" id="horaSalida" name="Hora_Fin_Capacita" required>
-                </div>
-            </div>
-
-            <div class="mt-4 text-end">
-                <button type="button" class="btn btn-next px-5 py-2 fw-bold" onclick="irAlPasoJS(2)">Siguiente ➜</button>
+        
+        <h4 class="seccion-titulo mt-4">DATOS DE ATENCIÓN</h4>
+        <div class="row g-3">
+            <div class="col-md-12">
+                <label class="form-label">Nombre del Servidor Público</label>
+                <input type="text" class="form-control" name="Servidor Público" required>
             </div>
         </div>
 
-        <!-- ==================== PÁGINA 2: FOTOS ==================== -->
-        <div class="step-pane" id="step2">
-            <h4 class="seccion-titulo">DOCUMENTACIÓN (FOTOS)</h4>
-            <div class="row g-3">
-                <div class="col-md-12">
-                    <label class="form-label">Identificación oficial vigente (Frente)</label>
-                    <input class="form-control" type="file" id="foto-ine-f-rep" name="Foto_INE_Frente_Representante" accept="image/*" required>
-                    <div id="badge-foto-ine-f-rep"></div>
-                </div>
-                <div class="col-md-12">
-                    <label class="form-label">Identificación oficial vigente (Reverso)</label>
-                    <input class="form-control" type="file" id="foto-ine-r-rep" name="Foto_INE_Reverso_Representante" accept="image/*" required>
-                    <div id="badge-foto-ine-r-rep"></div>
-                </div>
-                <div class="col-md-12">
-                    <label class="form-label">Fotografía del solicitante (rostro visible, en fondo claro, sin ediciones ni retoques)</label>
-                    <input class="form-control" type="file" id="foto-solic-rep" name="Foto_Solicitante_Representante" accept="image/*" required>
-                    <div id="badge-foto-solic-rep"></div>
-                </div>
+        <h4 class="seccion-titulo mt-4">1. DATOS DEL CENTRO DE TRABAJO</h4>
+        <div class="row g-3">
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Nombre del Centro de Trabajo</label>
+                <input type="text" class="form-control" name="NombreComercial" required>
+            </div>
+            
+            <div class="col-md-4">
+                <label class="form-label">Apellido Paterno Representante</label>
+                <input type="text" class="form-control" name="ApPaterno" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Apellido Materno Representante</label>
+                <input type="text" class="form-control" name="ApMaterno" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Nombre(s) Representante</label>
+                <input type="text" class="form-control" name="Nombres" required>
             </div>
 
-            <div class="mt-4 d-flex justify-content-between align-items-center">
-                <button type="button" class="btn btn-prev px-4 py-2 fw-bold" onclick="irAlPasoJS(1)">⬅ Anterior</button>
-                <button type="submit" id="btnSubmit" class="btn btn-enviar px-5 py-2 fw-bold">💾 Guardar Registro</button>
+            <!-- Regresan Estado, Municipio y Dirección -->
+            <div class="col-md-4">
+                <label class="form-label">Estado (Local)</label>
+                <input class="form-control" name="Estado" id="inputEstado" list="listaEstados" placeholder="Escribe o selecciona..." required>
+                <datalist id="listaEstados"></datalist>
             </div>
+            <div class="col-md-4">
+                <label class="form-label">Municipio (Local)</label>
+                <input class="form-control" name="Municipio" id="inputMunicipio" list="listaMunicipios" placeholder="Escribe o selecciona..." required>
+                <datalist id="listaMunicipios"></datalist>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Dirección del CT (Calle y Colonia)</label>
+                <input type="text" class="form-control" name="CalleColonia" required>
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label">Teléfono de contacto</label>
+                <input type="text" class="form-control" name="TelMovil" pattern="\d{10}" title="Debe contener exactamente 10 dígitos numéricos" maxlength="10" required>
+            </div>
+            
+            <div class="col-md-12 mt-3">
+                <label class="form-label fw-bold">Fotografía del solicitante</label>
+                <input class="form-control" type="file" id="foto-solic" name="Foto_Solicitante_Representante" accept="image/*" required>
+                <div id="badge-foto-solic"></div>
+                <small class="text-muted">Fotografía del solicitante (rostro visible, en fondo claro, sin ediciones ni retoques).</small>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <label class="form-label fw-bold">INE Frente (Rep)</label>
+                <input class="form-control" type="file" id="foto-ine-f" name="Foto_INE_Frente_Representante" accept="image/*" required>
+                <div id="badge-foto-ine-f"></div>
+            </div>
+            <div class="col-md-6 mt-3">
+                <label class="form-label fw-bold">INE Reverso (Rep)</label>
+                <input class="form-control" type="file" id="foto-ine-r" name="Foto_INE_Reverso_Representante" accept="image/*" required>
+                <div id="badge-foto-ine-r"></div>
+            </div>
+            <div class="col-md-12">
+                <small class="text-muted">(Credencial para votar, pasaporte o cédula profesional)</small>
+            </div>
+        </div>
+
+        <h4 class="seccion-titulo mt-4">2. PLAN DE ACTIVIDADES</h4>
+        <div class="row g-3">
+            <div class="col-md-12">
+                <label class="form-label">Descripción de las actividades que realizarán las y los Aprendices</label>
+                <textarea class="form-control" name="Actividades" rows="3" minlength="40" maxlength="500" placeholder="Describe brevemente las actividades..." required></textarea>
+            </div>
+            <div class="col-md-12">
+                <label class="form-label">Habilidades que desarrollarán las y los Aprendices</label>
+                <textarea class="form-control" name="Habilidades" rows="3" minlength="40" maxlength="500" placeholder="Describe brevemente las habilidades..." required></textarea>
+            </div>
+            
+            <div class="col-md-12 mt-3">
+                <label class="form-label d-block text-danger">Marca exactamente 5 días:</label>
+                <input type="hidden" name="Dias_Capacita" id="DiasCapacitacionHidden">
+                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="LUNES"> Lu</div>
+                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="MARTES"> Ma</div>
+                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="MIERCOLES"> Mi</div>
+                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="JUEVES"> Ju</div>
+                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="VIERNES"> Vi</div>
+                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="SABADO"> Sa</div>
+                <div class="form-check form-check-inline"><input class="form-check-input dias-cap" type="checkbox" value="DOMINGO"> Do</div>
+            </div>
+            
+            <div class="col-md-6">
+                <label class="form-label">Hora inicio</label>
+                <input type="time" class="form-control" id="horaEntrada" name="Hora_inicio_capacita" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Hora fin</label>
+                <input type="time" class="form-control" id="horaSalida" name="Hora_Fin_Capacita" required>
+            </div>
+        </div>
+
+        <div class="mt-5 text-center">
+            <button type="submit" id="btnSubmit" class="btn btn-enviar px-5 py-3 fw-bold w-100" style="font-size: 1.2rem;">🚀 Enviar Registro Extra Light</button>
         </div>
         
-        <div class="mt-5 text-center text-muted" style="font-size: 0.75rem;">
+        <div class="mt-4 text-center text-muted" style="font-size: 0.75rem;">
             <p>"Este formato no garantiza ni formaliza su participación en el Programa Jóvenes Construyendo el Futuro, en virtud de que se verificará previamente que cumple con los requisitos establecidos en las Reglas de Operación del Programa vigentes."</p>
             <p class="fw-bold">Versión 1.14</p>
         </div>
@@ -167,138 +159,7 @@
 
 <script src="app.js"></script>
 <script>
-    let pasoActualGlobal = 1;
-    function irAlPasoJS(pasoDestino) {
-        // Validar si intentan ir hacia adelante
-        if (pasoDestino > pasoActualGlobal) {
-            // Validamos todos los pasos intermedios para evitar que se salten requisitos
-            for (let i = pasoActualGlobal; i < pasoDestino; i++) {
-                const inputs = document.getElementById('step' + i).querySelectorAll('input, select, textarea');
-                for (let input of inputs) {
-                    if (!input.checkValidity()) {
-                        // Cambiamos a la pestaña donde está el error y mostramos globo nativo
-                        mostrarPaso(i);
-                        input.reportValidity();
-                        return; // Bloquea el avance
-                    }
-                }
-            }
-        }
-        mostrarPaso(pasoDestino);
-    }
-
-    function mostrarPaso(paso) {
-        pasoActualGlobal = paso;
-        // Ocultar paneles y despintar tabs
-        document.querySelectorAll('.step-pane').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.step-tab').forEach(el => el.classList.remove('active'));
-        
-        // Mostrar panel correcto y pintar tab
-        document.getElementById('step' + paso).classList.add('active');
-        document.getElementById('tab' + paso).classList.add('active');
-        
-        // Subir al inicio de la página para ver bien el contenido
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-
-    function toggleOtroActividad() {
-        const select = document.getElementById('actividadEconomica');
-        const divOtro = document.getElementById('divOtroActividad');
-        const inputOtra = document.getElementById('otraActividad');
-        if (select.value === 'OTRO') {
-            divOtro.style.display = 'block';
-            inputOtra.required = true; // Sigue siendo requerido si marcan OTRO
-            inputOtra.name = "Giro"; 
-            select.name = ""; 
-        } else {
-            divOtro.style.display = 'none';
-            inputOtra.required = false;
-            inputOtra.value = '';
-            inputOtra.name = "";
-            select.name = "Giro";
-        }
-    }
-
-    function toggleOtroCargo() {
-        const select = document.getElementById('selectCargo');
-        const divOtro = document.getElementById('divOtroCargo');
-        const inputOtra = document.getElementById('otroCargo');
-        if (select.value === 'OTRO') {
-            divOtro.style.display = 'block';
-            inputOtra.required = true;
-            inputOtra.name = "Cargo"; 
-            select.name = ""; 
-        } else {
-            divOtro.style.display = 'none';
-            inputOtra.required = false;
-            inputOtra.value = '';
-            inputOtra.name = "";
-            select.name = "Cargo";
-        }
-    }
-    function toggleTutor() {
-        const selectEsTutor = document.getElementById('selectEsTutor');
-        const divTutor = document.getElementById('divTutorOpcional');
-        if (selectEsTutor.value === 'NO') {
-            divTutor.style.display = 'block';
-        } else {
-            divTutor.style.display = 'none';
-        }
-    }
-   function toggleDiscapacidadCT() {
-        const selectAcepta = document.getElementById('selectAceptaDiscapacidad');
-        const divTipo = document.getElementById('divTipoDiscapacidad');
-        if (selectAcepta.value === 'SI') {
-            divTipo.style.display = 'block';
-        } else {
-            divTipo.style.display = 'none';
-            document.querySelectorAll('.chk-disc').forEach(cb => cb.checked = false);
-            document.getElementById('HiddenDiscapacidad').value = '';
-        }
-    }
-    function toggleRFC() {
-        const select = document.getElementById('tipoCentro');
-        const inputRFC = document.getElementById('inputRFC');
-        const reqRFC = document.getElementById('reqRFC');
-        if (select.value === 'FISICA') {
-            inputRFC.required = false;
-            reqRFC.textContent = '(Opcional)';
-        } else {
-            inputRFC.required = true;
-            reqRFC.textContent = '*';
-        }
-    }
-
-    document.getElementById('formCT').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Validación de días
-        const checkboxes = document.querySelectorAll('.dias-cap:checked');
-        if (checkboxes.length !== 5) {
-            alert('❌ Debes seleccionar EXACTAMENTE 5 días.');
-            return;
-        }
-        document.getElementById('DiasCapacitacionHidden').value = Array.from(checkboxes).map(cb => cb.value).join(', ');
-        
-        const entrada = document.getElementById('horaEntrada').value;
-        const salida = document.getElementById('horaSalida').value;
-        if (entrada && salida) {
-            const [hE, mE] = entrada.split(':').map(Number);
-            const [hS, mS] = salida.split(':').map(Number);
-            let minE = (hE * 60) + mE;
-            let minS = (hS * 60) + mS;
-            if (minS < minE) minS += 24 * 60;
-            const diff = (minS - minE) / 60;
-            if (diff < 5 || diff > 8) {
-                alert('❌ El horario debe ser de 5 a 8 horas diarias.');
-                return;
-            }
-        }
-        
-        submitForm(this, 'CT');
-    });
-
-    // CATÁLOGO DE ESTADOS Y MUNICIPIOS
+    // Regresa el Catálogo de Lugares
     const catalogoLugares = {
         "Aguascalientes": ["Aguascalientes", "Asientos", "Calvillo", "Cosío", "El Llano", "Jesús María", "Pabellón de Arteaga", "Rincón de Romos", "San Francisco de los Romo", "San José de Gracia", "Tepezalá"],
         "Baja California": ["Ensenada", "Mexicali", "Playas de Rosarito", "San Felipe", "San Quintín", "Tecate", "Tijuana"],
@@ -323,7 +184,7 @@
         "Puebla": ["Acajete", "Acateno", "Acatlán", "Acatzingo", "Acteopan", "Ahuacatlán", "Ahuatlán", "Ahuazotepec", "Ahuehuetitla", "Ajalpan", "Albino Zertuche", "Aljojuca", "Altepexi", "Amixtlán", "Amozoc", "Aquixtla", "Atempan", "Atexcal", "Atlequizayan", "Atlixco", "Atoyatempan", "Atzala", "Atzitzihuacán", "Atzitzintla", "Axutla", "Ayotoxco de Guerrero", "Calpan", "Caltepec", "Camocuautla", "Cañada Morelos", "Caxhuacan", "Chalchicomula de Sesma", "Chapulco", "Chiautla", "Chiautzingo", "Chichiquila", "Chiconcuautla", "Chietla", "Chigmecatitlán", "Chignahuapan", "Chignautla", "Chila", "Chila de la Sal", "Chilchotla", "Chinantla", "Coatepec", "Coatzingo", "Cohetzala", "Cohuecan", "Coronango", "Coxcatlán", "Coyomeapan", "Coyotepec", "Cuapiaxtla de Madero", "Cuautempan", "Cuautinchán", "Cuautlancingo", "Cuayuca de Andrade", "Cuetzalan del Progreso", "Cuyoaco", "Domingo Arenas", "Eloxochitlán", "Epatlán", "Esperanza", "Francisco Z. Mena", "General Felipe Ángeles", "Guadalupe", "Guadalupe Victoria", "Hermenegildo Galeana", "Honey", "Huaquechula", "Huatlatlauca", "Huauchinango", "Huehuetla", "Huehuetlán el Chico", "Huehuetlán el Grande", "Huejotzingo", "Hueyapan", "Hueytamalco", "Hueytlalpan", "Huitzilan de Serdán", "Huitziltepec", "Ixcamilpa de Guerrero", "Ixcaquixtla", "Ixtacamaxtitlán", "Ixtepec", "Izúcar de Matamoros", "Jalpan", "Jolalpan", "Jonotla", "Jopala", "Juan C. Bonilla", "Juan Galindo", "Juan N. Méndez", "Lafragua", "La Magdalena Tlatlauquitepec", "Libres", "Los Reyes de Juárez", "Mazapiltepec de Juárez", "Mixtla", "Molcaxac", "Naupan", "Nauzontla", "Nealtican", "Nicolás Bravo", "Nopalucan", "Ocotepec", "Ocoyucan", "Olintla", "Oriental", "Pahuatlán", "Palmar de Bravo", "Pantepec", "Petlalcingo", "Piaxtla", "Puebla", "Quecholac", "Quimixtlán", "Rafael Lara Grajales", "San Andrés Cholula", "San Antonio Cañada", "San Diego la Mesa Tochimiltzingo", "San Felipe Teotlalcingo", "San Felipe Tepatlán", "San Gabriel Chilac", "San Gregorio Atzompa", "San Jerónimo Tecuanipan", "San Jerónimo Xayacatlán", "San José Chiapa", "San José Miahuatlán", "San Juan Atenco", "San Juan Atzompa", "San Martín Texmelucan", "San Martín Totoltepec", "San Matías Tlalancaleca", "San Miguel Ixitlán", "San Miguel Xoxtla", "San Nicolás Buenos Aires", "San Nicolás de los Ranchos", "San Pablo Anicano", "San Pedro Cholula", "San Pedro Yeloixtlahuaca", "San Salvador el Seco", "San Salvador el Verde", "San Salvador Huixcolotla", "San Sebastián Tlacotepec", "Santa Catarina Tlaltempan", "Santa Inés Ahuatempan", "Santa Isabel Cholula", "Santiago Miahuatlán", "Santo Tomás Hueyotlipan", "Soltepec", "Tecali de Herrera", "Tecamachalco", "Tecomatlán", "Tehuacán", "Tehuitzingo", "Tenampulco", "Teopantlán", "Teotlalco", "Tepanco de López", "Tepango de Rodríguez", "Tepatlaxco de Hidalgo", "Tepeaca", "Tepemaxalco", "Tepeojuma", "Tepetzintla", "Tepexco", "Tepexi de Rodríguez", "Tepeyahualco", "Tepeyahualco de Cuauhtémoc", "Tetela de Ocampo", "Teteles de Avila Castillo", "Teziutlán", "Tianguismanalco", "Tilapa", "Tlachichuca", "Tlacotepec de Benito Juárez", "Tlacuilotepec", "Tlahuapan", "Tlaltenango", "Tlanepantla", "Tlaola", "Tlapacoya", "Tlapanalá", "Tlatlauquitepec", "Tlaxco", "Tochimilco", "Tochtepec", "Totoltepec de Guerrero", "Tulcingo", "Tuzamapan de Galeana", "Tzicatlacoyan", "Venustiano Carranza", "Vicente Guerrero", "Xayacatlán de Bravo", "Xicotepec", "Xicotlán", "Xiutetelco", "Xochiapulco", "Xochiltepec", "Xochitlán de Vicente Suárez", "Xochitlán Todos Santos", "Yaonáhuac", "Yehualtepec", "Zacapala", "Zacapoaxtla", "Zacatlán", "Zapotitlán", "Zapotitlán de Méndez", "Zaragoza", "Zautla", "Zihuateutla", "Zinacatepec", "Zongozotla", "Zoquiapan", "Zoquitlán"],
         "Querétaro": ["Amealco de Bonfil", "Arroyo Seco", "Cadereyta de Montes", "Colón", "Corregidora", "El Marqués", "Ezequiel Montes", "Huimilpan", "Jalpan de Serra", "Landa de Matamoros", "Pedro Escobedo", "Peñamiller", "Pinal de Amoles", "Querétaro", "San Joaquín", "San Juan del Río", "Tequisquiapan", "Tolimán"],
         "Quintana Roo": ["Bacalar", "Benito Juárez", "Cozumel", "Felipe Carrillo Puerto", "Isla Mujeres", "José María Morelos", "Lázaro Cárdenas", "Othón P. Blanco", "Puerto Morelos", "Solidaridad", "Tulum"],
-        "San Luis Potosí": ["Ahualulco", "Alaquines", "Aquismón", "Armadillo de los Infante", "Axtla de Terrazas", "Cárdenas", "Catorce", "Cedral", "Cerritos", "Cerro de San Pedro", "Charcas", "Ciudad del Maíz", "Ciudad Fernández", "Ciudad Valles", "Coxcatlán", "Ebano", "El Naranjo", "Guadalcázar", "Huehuetlán", "Lagunillas", "Matehuala", "Matlapa", "Mexquitic de Carmona", "Moctezuma", "Rayón", "Rioverde", "Salinas", "San Antonio", "San Ciro de Acosta", "San Luis Potosí", "San Martín Chalchicuautla", "San Nicolás Tolentino", "Santa Catarina", "Santa María del Río", "Santo Domingo", "San Vicente Tancuayalab", "Soledad de Graciano Sánchez", "Tamasopo", "Tamazunchale", "Tampacán", "Tampamolón Corona", "Tamuín", "Tancanhuitz", "Tanlajás", "Tanquián de Escobedo", "Tierra Nueva", "Vanegas", "Venado", "Villa de Arista", "Villa de Arriaga", "Villa de Guadalupe", "Villa de la Paz", "Villa de Pozos", "Villa de Ramos", "Villa de Reyes", "Villa Hidalgo", "Villa Juárez", "Xilitla", "Zaragoza"],
+        "San Luis Potosí": ["Ahualulco", "Alaquines", "Aquismón", "Armadillo de los Infante", "Axtla de Terrazas", "Cárdenas", "Catorce", "Cedral", "Cerritos", "Cerro de San Pedro", "Charcas", "Ciudad del Maíz", "Ciudad Fernández", "Ciudad Valles", "Coxcatlán", "Ebano", "El Naranjo", "Guadalcázar", "Huehuetlán", "Lagunillas", "Matehuala", "Matlapa", "Mexquitic de Carmona", "Moctezuma", "Rayón", "Rioverde", "Salinas", "San Antonio", "San Ciro de Acosta", "San Luis Potosí", "San Martín Chalchicuautla", "San Nicolás Tolentino", "Santa Catarina", "Santa María del Río", "Santo Domingo", "San Vicente Tancuayalab", "Soledad de Graciano Sánchez", "Tamasopo", "Tamasunchale", "Tampacán", "Tampamolón Corona", "Tamuín", "Tancanhuitz", "Tanlajás", "Tanquián de Escobedo", "Tierra Nueva", "Vanegas", "Venado", "Villa de Arista", "Villa de Arriaga", "Villa de Guadalupe", "Villa de la Paz", "Villa de Pozos", "Villa de Ramos", "Villa de Reyes", "Villa Hidalgo", "Villa Juárez", "Xilitla", "Zaragoza"],
         "Sinaloa": ["Ahome", "Angostura", "Badiraguato", "Choix", "Concordia", "Cosalá", "Culiacán", "Eldorado", "El Fuerte", "Elota", "Escuinapa", "Guasave", "Juan José Ríos", "Mazatlán", "Mocorito", "Navolato", "Rosario", "Salvador Alvarado", "San Ignacio", "Sinaloa"],
         "Sonora": ["Aconchi", "Agua Prieta", "Alamos", "Altar", "Arivechi", "Arizpe", "Atil", "Bacadéhuachi", "Bacanora", "Bacerac", "Bacoachi", "Bácum", "Banámichi", "Baviácora", "Bavispe", "Benito Juárez", "Benjamín Hill", "Caborca", "Cajeme", "Cananea", "Carbó", "Cucurpe", "Cumpas", "Divisaderos", "Empalme", "Etchojoa", "Fronteras", "General Plutarco Elías Calles", "Granados", "Guaymas", "Hermosillo", "Huachinera", "Huásabas", "Huatabampo", "Huépac", "Imuris", "La Colorada", "Magdalena", "Mazatán", "Moctezuma", "Naco", "Nácori Chico", "Nacozari de García", "Navojoa", "Nogales", "Onavas", "Opodepe", "Oquitoa", "Pitiquito", "Puerto Peñasco", "Quiriego", "Rayón", "Rosario", "Sahuaripa", "San Felipe de Jesús", "San Ignacio Río Muerto", "San Javier", "San Luis Río Colorado", "San Miguel de Horcasitas", "San Pedro de la Cueva", "Santa Ana", "Santa Cruz", "Sáric", "Soyopa", "Suaqui Grande", "Tepache", "Trincheras", "Tubutama", "Ures", "Villa Hidalgo", "Villa Pesqueira", "Yécora"],
         "Tabasco": ["Balancán", "Cárdenas", "Centla", "Centro", "Comalcalco", "Cunduacán", "Emiliano Zapata", "Huimanguillo", "Jalapa", "Jalpa de Méndez", "Jonuta", "Macuspana", "Nacajuca", "Paraíso", "Tacotalpa", "Teapa", "Tenosique"],
@@ -353,6 +214,7 @@
         const estadoReal = Object.keys(catalogoLugares).find(k => k.toUpperCase() === estadoSeleccionado);
         
         listaMunicipios.innerHTML = '';
+        inputMunicipio.value = '';
         
         if (estadoReal && catalogoLugares[estadoReal]) {
             const municipios = catalogoLugares[estadoReal].sort();
@@ -384,6 +246,35 @@
             this.value = ''; 
             alert('❌ Debes seleccionar un Municipio válido de la lista.');
         }
+    });
+
+    document.getElementById('formCT').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Validación de días
+        const checkboxes = document.querySelectorAll('.dias-cap:checked');
+        if (checkboxes.length !== 5) {
+            alert('❌ Debes seleccionar EXACTAMENTE 5 días.');
+            return;
+        }
+        document.getElementById('DiasCapacitacionHidden').value = Array.from(checkboxes).map(cb => cb.value).join(', ');
+        
+        const entrada = document.getElementById('horaEntrada').value;
+        const salida = document.getElementById('horaSalida').value;
+        if (entrada && salida) {
+            const [hE, mE] = entrada.split(':').map(Number);
+            const [hS, mS] = salida.split(':').map(Number);
+            let minE = (hE * 60) + mE;
+            let minS = (hS * 60) + mS;
+            if (minS < minE) minS += 24 * 60;
+            const diff = (minS - minE) / 60;
+            if (diff < 5 || diff > 8) {
+                alert('❌ El horario debe ser de 5 a 8 horas diarias.');
+                return;
+            }
+        }
+        
+        submitForm(this, 'CT');
     });
 </script>
 </body>
