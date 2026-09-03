@@ -34,7 +34,7 @@
 <div class="sticky-top-bar">
     <div class="banner-legal">"ESTE PROGRAMA ES PÚBLICO AJENO A CUALQUIER PARTIDO POLÍTICO. QUEDA PROHIBIDO EL USO PARA FINES DISTINTOS A LOS ESTABLECIDOS EN EL PROGRAMA"</div>
     <div class="d-flex justify-content-between align-items-center p-3 header-institucional mt-2">
-        <h5 class="m-0 fw-bold">FURT - CT (EXTRA LITE)</h5>
+        <h5 class="m-0 fw-bold">FURT - CENTRO DE TRABAJO</h5>
         <button id="sync-counter" class="btn btn-light btn-sm fw-bold text-dark" onclick="syncPending()">Pendientes: 0</button>
     </div>
 </div>
@@ -88,7 +88,7 @@
 
             <div class="col-md-12">
                 <label class="form-label">Teléfono de contacto</label>
-                <input type="text" class="form-control" name="TelMovil" pattern="\d{10}" title="Debe contener exactamente 10 dígitos numéricos" maxlength="10" required>
+                <input type="tel" class="form-control" name="TelMovil" pattern="\d{10}" title="Debe contener exactamente 10 dígitos numéricos" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
             </div>
             
             <div class="col-md-12 mt-3">
@@ -147,12 +147,12 @@
         </div>
 
         <div class="mt-5 text-center">
-            <button type="submit" id="btnSubmit" class="btn btn-enviar px-5 py-3 fw-bold w-100" style="font-size: 1.2rem;">🚀 Enviar Registro</button>
+            <button type="submit" id="btnSubmit" class="btn btn-enviar px-5 py-3 fw-bold w-100" style="font-size: 1.2rem;">💾 Guardar Registro</button>
         </div>
         
         <div class="mt-4 text-center text-muted" style="font-size: 0.75rem;">
             <p>"Este formato no garantiza ni formaliza su participación en el Programa Jóvenes Construyendo el Futuro, en virtud de que se verificará previamente que cumple con los requisitos establecidos en las Reglas de Operación del Programa vigentes."</p>
-            <p class="fw-bold">Versión 1.15</p>
+            <p class="fw-bold">Versión 1.16</p>
         </div>
     </form>
 </div>
