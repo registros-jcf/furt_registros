@@ -35,7 +35,10 @@
     <div class="banner-legal">"ESTE PROGRAMA ES PÚBLICO AJENO A CUALQUIER PARTIDO POLÍTICO. QUEDA PROHIBIDO EL USO PARA FINES DISTINTOS A LOS ESTABLECIDOS EN EL PROGRAMA"</div>
     <div class="d-flex justify-content-between align-items-center p-3 header-institucional mt-2">
         <h5 class="m-0 fw-bold">FURT - CENTRO DE TRABAJO</h5>
-        <button id="sync-counter" class="btn btn-light btn-sm fw-bold text-dark" onclick="syncPending()">Pendientes: 0</button>
+        <div>
+            <button id="sync-counter" class="btn btn-light btn-sm fw-bold text-dark me-2" onclick="syncPending()">Pendientes: 0</button>
+            <button id="btn-logout" class="btn btn-outline-light btn-sm fw-bold d-none" onclick="cerrarSesion()">Salir</button>
+        </div>
     </div>
 </div>
 
@@ -54,14 +57,6 @@
     <form id="formCT">
         <input type="hidden" name="PIN_Autorizacion" id="hiddenPIN">
         
-        <h4 class="seccion-titulo mt-4">DATOS DE ATENCIÓN</h4>
-        <div class="row g-3">
-            <div class="col-md-12">
-                <label class="form-label">Nombre del Servidor Público</label>
-                <input type="text" class="form-control" name="Servidor Público" required>
-            </div>
-        </div>
-
         <h4 class="seccion-titulo mt-4">1. DATOS DEL CENTRO DE TRABAJO</h4>
         <div class="row g-3">
             <div class="col-md-12">
@@ -322,6 +317,14 @@ async function generarHash(texto) {
         document.getElementById('pantallaLogin').classList.add('d-none');
         document.getElementById('contenedorFormulario').classList.remove('d-none');
         document.getElementById('hiddenPIN').value = pin;
+        document.getElementById('btn-logout').classList.remove('d-none'); // Muestra el botón de salir
+    }
+
+    function cerrarSesion() {
+        if (confirm("¿Seguro que deseas cerrar sesión?")) {
+            localStorage.removeItem('pinAcceso');
+            window.location.reload(); // Recarga la página para volver al candado
+        }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
