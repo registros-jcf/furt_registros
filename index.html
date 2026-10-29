@@ -39,8 +39,20 @@
     </div>
 </div>
 
-<div class="container pb-4">
+<!-- PANTALLA DE LOGIN -->
+<div class="container mt-5 pt-5" id="pantallaLogin">
+    <div class="card shadow p-4 mx-auto" style="max-width: 350px; border: 2px solid var(--stps-gold);">
+        <h5 class="text-center mb-3 fw-bold" style="color: var(--stps-guinda);">Acceso Restringido</h5>
+        <input type="password" id="inputPIN" class="form-control text-center fw-bold mb-3" placeholder="Ingresa tu PIN">
+        <button type="button" class="btn btn-enviar w-100 fw-bold" onclick="validarPIN()">Entrar</button>
+        <div id="errorPIN" class="text-danger text-center mt-2 d-none small fw-bold">PIN incorrecto</div>
+    </div>
+</div>
+
+<!-- FORMULARIO OCULTO POR DEFECTO -->
+<div class="container pb-4 d-none" id="contenedorFormulario">
     <form id="formCT">
+        <input type="hidden" name="PIN_Autorizacion" id="hiddenPIN">
         
         <h4 class="seccion-titulo mt-4">DATOS DE ATENCIÓN</h4>
         <div class="row g-3">
@@ -275,6 +287,48 @@
         }
         
         submitForm(this, 'CT');
+    });
+async function generarHash(texto) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(texto);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function validarPIN() {
+        const pinIngresado = document.getElementById('inputPIN').value.trim();
+        
+        // Pega aquí los hashes SHA-256 de los códigos (deben estar en minúsculas)
+        const hashesValidos = [
+            "ef2a4189fe71eb00090335db279d131afdb897d95d8f0409dd8071c7911cffeb",
+            "90d8f191e477ce3943cfa140ec5f3aa0febec94b64da3d9d1a276ad2d1d7dc1e",
+            "6475cd1705ca82f1173ec7e7b3aeeb196b057b88b37d6e4079f54d4a2b207400" 
+        ];
+        
+        const hashCalculado = await generarHash(pinIngresado);
+
+        if (hashesValidos.includes(hashCalculado)) {
+            localStorage.setItem('pinAcceso', pinIngresado);
+            desbloquearFormulario(pinIngresado);
+            document.getElementById('errorPIN').classList.add('d-none');
+        } else {
+            document.getElementById('errorPIN').textContent = "Acceso denegado. PIN incorrecto.";
+            document.getElementById('errorPIN').classList.remove('d-none');
+        }
+    }
+
+    function desbloquearFormulario(pin) {
+        document.getElementById('pantallaLogin').classList.add('d-none');
+        document.getElementById('contenedorFormulario').classList.remove('d-none');
+        document.getElementById('hiddenPIN').value = pin;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const pinGuardado = localStorage.getItem('pinAcceso');
+        if (pinGuardado) {
+            desbloquearFormulario(pinGuardado);
+        }
     });
 </script>
 </body>
