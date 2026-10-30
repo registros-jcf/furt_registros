@@ -18,18 +18,12 @@ request.onupgradeneeded = e => {
 request.onsuccess = e => { db = e.target.result; updatePendingCount(); };
 
 // 2. Validaciones Globales de Inputs
-// OJO: reasignar .value en CADA tecla (aunque el texto no cambie) hace que el
-// cursor salte siempre al final del campo. En campos largos (como la CURP)
-// esto "confunde" al navegador: cada letra que escribes en medio del texto
-// se mueve al final, dando la sensación de que no te deja escribir bien.
-// Por eso ahora sólo tocamos .value si el texto realmente cambió, y
-// reposicionamos el cursor donde el usuario iba escribiendo.
 document.addEventListener('input', e => {
   if (e.target.matches('input[type="text"], textarea')) {
     const original = e.target.value;
     let val = original;
-    val = val.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Quitar acentos
-    val = val.replace(/[^a-zA-Z0-9\s]/g, ""); // Quitar especiales
+    val = val.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
+    val = val.replace(/[^a-zA-Z0-9\s]/g, ""); 
     val = val.toUpperCase();
 
     if (val !== original) {
@@ -97,7 +91,6 @@ async function submitForm(formElement, formType) {
     if (typeof value === 'string') payload.fields[key] = value;
   }
   
-  // Agregamos el Timestamp exacto de JS
   payload.fields['Timestamp'] = new Date().toLocaleString('es-MX');
 
   formElement.querySelectorAll('input[type="file"]').forEach(input => {
@@ -112,18 +105,19 @@ async function submitForm(formElement, formType) {
     
     const data = await response.json();
     
-    // Si Google nos manda un error interno, lo mostramos y detenemos todo
     if (data.status === 'error') {
-        alert("❌ El servidor respondió, pero falló internamente: " + data.message);
+        Swal.fire({ icon: 'error', title: 'Error del servidor', text: data.message, confirmButtonColor: '#b38e5d' });
+        if (loadingOverlay) { loadingOverlay.classList.add('d-none'); }
+        if (btnSubmit) { btnSubmit.disabled = false; }
         return; 
     }
 
     if (!response.ok) throw new Error('Network error');
     
-    alert("✅ ¡Registro guardado en Sheets y Drive con éxito!");
+    Swal.fire({ icon: 'success', title: '¡Éxito!', text: 'Registro guardado en Sheets y Drive.', confirmButtonColor: '#b38e5d' });
     formElement.reset();
+    sessionStorage.removeItem('borrador_' + formElement.id); 
     
-  sessionStorage.removeItem('borrador_' + formElement.id); // Borramos el borrador
     if (loadingOverlay) { loadingOverlay.classList.add('d-none'); }
     if (btnSubmit) { btnSubmit.disabled = false; btnSubmit.innerHTML = '💾 Guardar Registro'; }
   } catch (error) {
@@ -131,14 +125,15 @@ async function submitForm(formElement, formType) {
     tx.objectStore(STORE_NAME).add(payload);
     tx.oncomplete = () => {
       updatePendingCount();
-      alert("Sin conexión. Registro guardado localmente 💾");
+      Swal.fire({ icon: 'info', title: 'Modo Offline', text: 'Sin conexión. Registro guardado localmente 💾', confirmButtonColor: '#b38e5d' });
       formElement.reset();
-      sessionStorage.removeItem('borrador_' + formElement.id); // Borramos el borrador
+      sessionStorage.removeItem('borrador_' + formElement.id); 
       if (loadingOverlay) { loadingOverlay.classList.add('d-none'); }
       if (btnSubmit) { btnSubmit.disabled = false; btnSubmit.innerHTML = '💾 Guardar Registro'; }
     };
   }
 }
+
 // 6. Contador y Sincronizador
 function updatePendingCount() {
   const tx = db.transaction(STORE_NAME, 'readonly');
@@ -148,10 +143,11 @@ function updatePendingCount() {
     document.getElementById('sync-counter').textContent = `Pendientes: ${count}`;
   };
 }
+
 // 7. Sincronizar manualmente los pendientes
 async function syncPending() {
   if (!navigator.onLine) {
-    alert("❌ Necesitas conexión a internet para sincronizar.");
+    Swal.fire({ icon: 'warning', title: 'Sin conexión', text: 'Necesitas internet para sincronizar.', confirmButtonColor: '#b38e5d' });
     return;
   }
 
@@ -161,18 +157,24 @@ async function syncPending() {
   req.onsuccess = async () => {
     const registros = req.result;
     if (registros.length === 0) {
-      alert("✅ No hay registros pendientes por enviar.");
+      Swal.fire({ icon: 'success', title: 'Al día', text: 'No hay registros pendientes por enviar.', confirmButtonColor: '#b38e5d' });
       return;
     }
 
-    alert(`🚀 Iniciando envío de ${registros.length} registro(s) pendiente(s)... Por favor, no cierres la app.`);
+    Swal.fire({ 
+        title: 'Sincronizando', 
+        text: `Iniciando envío de ${registros.length} registro(s) pendiente(s)... Por favor, no cierres la app.`,
+        icon: 'info',
+        showConfirmButton: false,
+        allowOutsideClick: false
+    });
+
     const loadingOverlay = document.getElementById('loadingOverlay');
     if (loadingOverlay) { loadingOverlay.classList.remove('d-none'); }
     let enviados = 0;
 
     for (let record of registros) {
       try {
-        // OJO: Pega aquí la misma URL de Apps Script que usaste arriba
         const response = await fetch('https://script.google.com/macros/s/AKfycby7kqN1YCUbgjA_RJHpsMkQmo4IsTZeC2pXElzAkvwYGvaz2iUuNIQbT2_f7oCpkxCV/exec', {
           method: 'POST',
           body: JSON.stringify(record)
@@ -180,33 +182,34 @@ async function syncPending() {
 
         if (!response.ok) throw new Error('Error de red');
         
-        // Si se envió bien, lo eliminamos de la memoria local
         const delTx = db.transaction(STORE_NAME, 'readwrite');
         delTx.objectStore(STORE_NAME).delete(record.id);
         enviados++;
 
       } catch (error) {
         console.error("Fallo al enviar registro:", error);
-        break; // Rompemos el ciclo si falla uno para no colapsar la app
+        break; 
       }
     }
 
-    updatePendingCount(); // Actualiza el botón para que vuelva a decir "Pendientes: 0"
+    updatePendingCount(); 
     if (loadingOverlay) { loadingOverlay.classList.add('d-none'); }
     
-    if (enviados > 0) alert(`✅ ¡Se enviaron ${enviados} registro(s) con éxito al servidor!`);
-    else alert("⚠️ Hubo un problema de conexión. Intenta de nuevo más tarde.");
+    if (enviados > 0) {
+        Swal.fire({ icon: 'success', title: 'Completado', text: `¡Se enviaron ${enviados} registro(s) con éxito al servidor!`, confirmButtonColor: '#b38e5d' });
+    } else {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Hubo un problema de conexión. Intenta de nuevo más tarde.', confirmButtonColor: '#b38e5d' });
+    }
   };
 }
 
-// 7. Auto-guardado de borradores al navegar
+// 8. Auto-guardado de borradores al navegar
 document.addEventListener('DOMContentLoaded', () => {
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
         const formId = form.id;
         if (!formId) return;
 
-        // Restaurar datos al cargar la página
         const draft = sessionStorage.getItem('borrador_' + formId);
         if (draft) {
             const data = JSON.parse(draft);
@@ -214,23 +217,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 const field = form.elements[key];
                 if (field && field.type !== 'file') {
                     if (field.type === 'checkbox' || field.type === 'radio') {
-                        if (field.length) { // Múltiples casillas con el mismo nombre
+                        if (field.length) { 
                             field.forEach(f => { if (data[key].includes(f.value)) f.checked = true; });
                         } else {
                             field.checked = data[key];
                         }
                     } else {
                         field.value = data[key];
-                        // Disparar evento para que se abran los campos condicionales
                         if (field.tagName === 'SELECT') field.dispatchEvent(new Event('change'));
                     }
                 }
             }
         }
 
-        // Guardar datos en silencio cada vez que escriben algo
         form.addEventListener('input', e => {
-            if (e.target.type === 'file') return; // Las fotos no se pueden auto-guardar por seguridad del navegador
+            if (e.target.type === 'file') return; 
             const formData = new FormData(form);
             const data = {};
             for (let [key, value] of formData.entries()) {
