@@ -114,7 +114,7 @@ async function submitForm(formElement, formType) {
 
     if (!response.ok) throw new Error('Network error');
     
-    Swal.fire({ icon: 'success', title: '¡Éxito!', text: 'Registro guardado en Sheets y Drive.', confirmButtonColor: '#b38e5d' });
+    Swal.fire({ icon: 'success', title: '¡Éxito!', text: 'Registro guardado correctamente.', confirmButtonColor: '#b38e5d' });
     formElement.reset();
     sessionStorage.removeItem('borrador_' + formElement.id); 
     
